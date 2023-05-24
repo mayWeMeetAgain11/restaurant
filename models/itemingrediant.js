@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   ItemIngredient.init({
     amount: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       validate: {
         notEmpty: true,
       }

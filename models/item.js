@@ -20,13 +20,21 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: {
           name: 'item_id'
         },
-        though: models.ItemTag
+        through: models.ItemTag
+      });
+      this.belongsToMany(models.Ingredient, {
+        foreignKey: 'item_id',
+        through: models.ItemIngredient
+      });
+      this.hasMany(models.Photo, {
+        foreignKey: 'item_id',
       });
     }
   }
   Item.init({
     id: {
       type: DataTypes.INTEGER,
+      primaryKey: true,
       autoIncrement: true
     },
     name: {

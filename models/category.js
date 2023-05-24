@@ -14,12 +14,14 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.Category, {
         foreignKey: {
           name: 'category_id'
-        }
+        },
+        as: 'category',
       });
       this.hasMany(models.Category, {
         foreinKey: {
           name: 'category_id'
-        }
+        },
+        as: 'categories',
       });
       this.hasMany(models.Item, {
         foreignKey: {
@@ -31,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
   Category.init({
     id: {
       type: DataTypes.INTEGER,
+      primaryKey: true,
       autoIncrement: true
     },
     name: {
