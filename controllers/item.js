@@ -1,4 +1,4 @@
-const { Item, Photo, Ingredient, Tag } = require('../models'); 
+const { Item, Photo, Ingredient, Tag, sequelize } = require('../models'); 
 const {Op} = require('sequelize');
 const fs = require('fs');
 
@@ -9,7 +9,6 @@ exports.storeItem = async (req, res, next) => {
             name: name,
             details: details,
             cost: cost,
-            active: active || false,
             category_id: category_id
         });
         if (itemTags) {
@@ -85,7 +84,6 @@ exports.updateItem = async (req, res, next) => {
             item.name = name;
             item.cost = cost;
             item.details = details;
-            item.active = active;
             item.itemTags = itemTags;
             item.itemIngredients = itemIngredients;
             item.category_id = category_id;
@@ -103,3 +101,53 @@ exports.updateItem = async (req, res, next) => {
         return res.status(500).json(error);
     }
 };
+
+exports.getActiveItem = async (req, res, next) => {
+    try {
+        const items = await Item.findAll({
+            where: {
+                active: true,
+            }
+        });
+        return res.status(200).json(items);
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+};
+
+exports.updateToActive = async (req, res, next) => {
+    const { ids } = req.body
+    try {
+        const oldItems = await Item.update({
+            active: false
+        },{
+            where: {}
+        });
+        const NewItems = await Item.update({
+            active: true
+        },{
+            where: {
+                id: ids
+            }
+        })
+        return res.status(200).json({ message: "items updated successfully" });
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+}; 
+
+exports.updateTopShow = async (req, res, next) => {
+    const { ids } = req.body
+    try {
+        const NewItems = await Item.update({
+            active: sequelize.literal('NOT active')
+        },{
+            where: {
+                id: ids
+            }
+        })
+        return res.status(200).json({ message: "items updated successfully" });
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+}; 

@@ -22,4 +22,10 @@ router.delete("/:id", item.deleteItem);
 
 router.put("/:id", item.updateItem);
 
+router.get("/top-show", item.getActiveItem);
+
+router.put("/top-show/update", item.updateTopShow);
+
+router.put("/top-show/new-list", item.updateToActive);
+
 module.exports = router;
