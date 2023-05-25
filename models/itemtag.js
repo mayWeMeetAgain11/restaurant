@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   ItemTag.init({
     id: {
       type: DataTypes.INTEGER,
+      primaryKey: true,
       autoIncrement: true
     },
   }, {
