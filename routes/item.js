@@ -18,4 +18,8 @@ const item = require("../controllers/item");
 
 router.post("/", upload, item.storeItem);
 
+router.delete("/:id", item.deleteItem);
+
+router.put("/:id", item.updateItem);
+
 module.exports = router;
