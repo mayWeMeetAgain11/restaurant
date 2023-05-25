@@ -17,7 +17,7 @@ app.use('/ingredients', require('./routes/ingredient'));
 
 app.listen({ port: 3000, }, async () => {
     // { focus: true }
-    await sequelize.sync();
-    // await sequelize.authenticate();
+    // await sequelize.sync();
+    await sequelize.authenticate();
     console.log('starting');
 });

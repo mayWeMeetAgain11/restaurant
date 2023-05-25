@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       this.hasMany(models.Photo, {
         foreignKey: 'item_id',
+        onDelete: 'CASCADE',
       });
     }
   }
