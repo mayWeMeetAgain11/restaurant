@@ -8,19 +8,21 @@ exports.getCategory = async (req, res, next) => {
                 {
                     model: Category,
                     as: 'categories',
-                },
-                {
-                    model: Item,
                     include: [
                         {
-                            model: Tag
-                        }, {
-                            model: Ingredient
-                        }, {
-                            model: Photo
+                            model: Item,
+                            include: [
+                                {
+                                    model: Tag
+                                }, {
+                                    model: Ingredient
+                                }, {
+                                    model: Photo
+                                }
+                            ]
                         }
                     ]
-                }
+                },
             ]
         });
         return res.status(200).json(category);
