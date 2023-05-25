@@ -44,3 +44,42 @@ exports.storeCategory = async (req, res, next) => {
         return res.status(500).json(error.message);
     }
 };
+
+exports.updateCategory = async (req, res, next) => {
+    const { name, category_id } = req.body;
+    const { id } = req.params;
+    try {
+        const category = await Category.findOne({
+            where: {
+                id: id,
+            }
+        });
+        if (!category) {
+            return res.status(404).json({ message: 'category not found' });
+        }
+        category.name = name;
+        category.category_id = category_id;
+        category.save();
+        return res.status(200).json({ message: 'category updated successfully' });
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
+};
+
+exports.deleteCategory = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const category = await Category.findOne({
+            where: {
+                id: id,
+            }
+        });
+        if (!category) {
+            return res.status(404).json({ message: 'category not found' });
+        }
+        await category.destroy();
+        return res.status(200).json({ message: 'category deleted successfully' });
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
+};

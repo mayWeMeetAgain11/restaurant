@@ -21,8 +21,9 @@ module.exports = (sequelize, DataTypes) => {
       });
       this.hasMany(models.Item, {
         foreignKey: {
-          name: 'category_id'
-        }
+          name: 'category_id',
+        },
+        onDelete: 'CASCADE',
       });
     }
   }
