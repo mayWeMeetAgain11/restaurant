@@ -20,3 +20,32 @@ exports.storeIngredient = async (req, res, next) => {
         return res.status(500).json(error); 
     } 
 };
+exports.deleteIngredient = async (req, res, next) => {
+    let { id } = req.params;
+    try {
+        const ingredient = await Ingredient.findByPk(id);
+        if (!ingredient) {
+            return res.status(403).json({massage: 'ingredient not found'});
+        }
+            ingredient.destroy();
+            return res.status(200).json({massage: 'ingredient deleted sucessfully'});
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+};
+
+exports.updateIngredient = async (req, res, next) => {
+    let { id } = req.params;
+    let {name} = req.body;
+    try {
+        const ingredient = await Ingredient.findByPk(id);
+        if (!ingredient) {
+            return res.status(403).json({massage: 'ingredient not found'});
+        }
+            ingredient.name = name;
+            ingredient.save();
+            return res.status(200).json({massage: 'ingredient updated sucessfully'});
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+};
