@@ -11,6 +11,7 @@ exports.getCategory = async (req, res, next) => {
                     model: Category,
                     as: 'categories',
                     attributes: ['id', `name_${language}`, 'createdAt', 'updatedAt'],
+                    hierarchy: true,
                     include: [
                         {
                             model: Item,
@@ -29,7 +30,25 @@ exports.getCategory = async (req, res, next) => {
                         }
                     ]
                 },
-            ]
+                {
+                    model: Item,
+                    attributes: ['id', `name_${language}`, `details_${language}`, 'cost', 'createdAt', 'updatedAt'],
+                    include: [
+                        {
+                            model: Tag,
+                            attributes: ['id', `name_${language}`, 'createdAt', 'updatedAt'],
+                        }, {
+                            model: Ingredient,
+                            attributes: ['id', `name_${language}`, 'createdAt', 'updatedAt'],
+                        }, {
+                            model: Photo
+                        }
+                    ]
+                }
+            ],
+            where: {
+                category_id: null,
+            }
         });
         return res.status(200).json(category);
     } catch (error) {
