@@ -38,14 +38,42 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    name: {
+    name_ar: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true
       }
     },
-    details: {
+    name_en: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
+    name_dw: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
+    details_ar: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: true
+      }
+    },
+    details_en: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: true
+      }
+    },
+    details_dw: {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
