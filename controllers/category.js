@@ -33,10 +33,12 @@ exports.getCategory = async (req, res, next) => {
 
 
 exports.storeCategory = async (req, res, next) => {
-    const { name, category_id } = req.body;
+    const { name_ar, name_en, name_dw, category_id } = req.body;
     try {
         const category = await Category.create({
-            name: name,
+            name_ar: name_ar,
+            name_en: name_en,
+            name_dw: name_dw,
             category_id: category_id || null,
         });
         return res.status(200).json(category);
@@ -46,7 +48,7 @@ exports.storeCategory = async (req, res, next) => {
 };
 
 exports.updateCategory = async (req, res, next) => {
-    const { name, category_id } = req.body;
+    const { name_ar, category_id } = req.body;
     const { id } = req.params;
     try {
         const category = await Category.findOne({
@@ -57,7 +59,9 @@ exports.updateCategory = async (req, res, next) => {
         if (!category) {
             return res.status(404).json({ message: 'category not found' });
         }
-        category.name = name;
+        category.name_ar = name_ar;
+        category.name_en = name_en;
+        category.name_dw = name_dw;
         category.category_id = category_id;
         category.save();
         return res.status(200).json({ message: 'category updated successfully' });

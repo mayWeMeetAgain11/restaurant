@@ -10,10 +10,12 @@ exports.getAllIngredients = async (req, res, next) => {
 };
 
 exports.storeIngredient = async (req, res, next) => { 
-    const {name} = req.body;
+    const {name_ar, name_en, name_dw} = req.body;
     try { 
         const ingredient = await Ingredient.create({ 
-            name: name
+            name_ar: name_ar,
+            name_en: name_en,
+            name_dw: name_dw
         }); 
         return res.status(200).json(ingredient); 
     } catch (error) { 
@@ -36,13 +38,15 @@ exports.deleteIngredient = async (req, res, next) => {
 
 exports.updateIngredient = async (req, res, next) => {
     let { id } = req.params;
-    let {name} = req.body;
+    let {name_ar, name_en, name_dw} = req.body;
     try {
         const ingredient = await Ingredient.findByPk(id);
         if (!ingredient) {
             return res.status(403).json({massage: 'ingredient not found'});
         }
-            ingredient.name = name;
+            ingredient.name_ar = name_ar;
+            ingredient.name_en = name_en;
+            ingredient.name_dw = name_dw;
             ingredient.save();
             return res.status(200).json({massage: 'ingredient updated sucessfully'});
     } catch (error) {
