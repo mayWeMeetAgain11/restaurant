@@ -59,7 +59,16 @@ exports.getCategory = async (req, res, next) => {
 
 exports.storeCategory = async (req, res, next) => {
     const { name_ar, name_en, name_dw, category_id } = req.body;
+    console.log("hjkggk");
     try {
+        const rootCategory = await Category.findOne({
+            where: {
+                id: category_id
+            }
+        });
+        if (rootCategory.category_id !== null)  {
+            return res.status(401).json({msg: "you can not add more than two level in category"});
+        }
         const category = await Category.create({
             name_ar: name_ar,
             name_en: name_en,

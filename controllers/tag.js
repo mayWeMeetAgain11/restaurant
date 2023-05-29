@@ -15,6 +15,7 @@ exports.storeTag = async (req, res, next) => {
 };
 
 exports.getAllTags = async (req, res, next) => {
+    const { language } = req.query;
     try { 
         const tag = await Tag.findAll({
             attributes: [

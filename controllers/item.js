@@ -111,6 +111,7 @@ exports.updateItem = async (req, res, next) => {
 };
 
 exports.getActiveItem = async (req, res, next) => {
+    const {language} = req.query;
     try {
         const items = await Item.findAll({
             attributes: [
