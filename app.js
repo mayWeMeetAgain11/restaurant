@@ -13,6 +13,7 @@ app.use('/categories', require('./routes/category'));
 app.use('/items', require('./routes/item'));
 app.use('/tags', require('./routes/tag'));
 app.use('/ingredients', require('./routes/ingredient'));
+app.use('/users', require('./routes/auth'));
 
 
 app.listen({ port: 3000, }, async () => {

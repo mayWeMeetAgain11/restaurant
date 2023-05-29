@@ -16,7 +16,14 @@ exports.storeTag = async (req, res, next) => {
 
 exports.getAllTags = async (req, res, next) => {
     try { 
-        const tag = await Tag.findAll({}); 
+        const tag = await Tag.findAll({
+            attributes: [
+                'id',
+                `name_${language}`,
+                'createdAt',
+                'updatedAt',
+            ]
+        }); 
         return res.status(200).json(tag); 
     } catch (error) { 
         return res.status(500).json(error); 

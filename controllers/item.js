@@ -113,6 +113,15 @@ exports.updateItem = async (req, res, next) => {
 exports.getActiveItem = async (req, res, next) => {
     try {
         const items = await Item.findAll({
+            attributes: [
+                'id',
+                `name_${language}`,
+                `details${language}`,
+                'category_id',
+                'cost',
+                'createdAt',
+                'updatedAt',
+            ],
             where: {
                 active: true,
             }

@@ -1,8 +1,16 @@
 const { Ingredient } = require('../models');
 
 exports.getAllIngredients = async (req, res, next) => {
+    const {language} = req.query;
     try { 
-        const ingredients = await Ingredient.findAll({});
+        const ingredients = await Ingredient.findAll({
+            attributes: [
+                'id',
+                `name_${language}`,
+                'createdAt',
+                'updatedAt',
+            ]
+        });
         return res.status(200).json(ingredients); 
     } catch (error) { 
         return res.status(500).json(error); 

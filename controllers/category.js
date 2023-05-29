@@ -54,7 +54,7 @@ exports.storeCategory = async (req, res, next) => {
 };
 
 exports.updateCategory = async (req, res, next) => {
-    const { name, name_en, name_dw, category_id } = req.body;
+    const { name_ar, name_en, name_dw, category_id } = req.body;
     const { id } = req.params;
     try {
         const category = await Category.findOne({
