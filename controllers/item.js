@@ -3,11 +3,15 @@ const {Op} = require('sequelize');
 const fs = require('fs');
 
 exports.storeItem = async (req, res, next) => { 
-    const {itemTags, name, details, cost, active, itemIngredients, category_id} = req.body;
+    const {itemTags, name_ar, name_en, name_dw, details_ar, details_en, details_dw, cost, itemIngredients, category_id} = req.body;
     try { 
         const item = await Item.create({ 
-            name: name,
-            details: details,
+            name_ar: name_ar,
+            name_en: name_en,
+            name_dw: name_dw,
+            details_ar: details_ar,
+            details_en: details_en,
+            details_dw: details_dw,
             cost: cost,
             category_id: category_id
         });
@@ -75,15 +79,19 @@ exports.deleteItem = async (req, res, next) => {
 
 exports.updateItem = async (req, res, next) => {
     let { id } = req.params;
-    let {itemTags, name, details, cost, active, itemIngredients, category_id} = req.body;
+    let {itemTags, name_ar, name_en, name_dw, details_ar, details_en, details_dw, cost, active, itemIngredients, category_id} = req.body;
     try {
         const item = await Item.findByPk(id);
         if (!item) {
             return res.status(403).json({massage: 'item not found'});
         }
-            item.name = name;
+            item.name_ar = name_ar;
+            item.name_en = name_en;
+            item.name_dw = name_dw;
             item.cost = cost;
-            item.details = details;
+            item.details_ar = details_ar;
+            item.details_en = details_en;
+            item.details_dw = details_dw;
             item.itemTags = itemTags;
             item.itemIngredients = itemIngredients;
             item.category_id = category_id;
