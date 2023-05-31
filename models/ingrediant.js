@@ -20,23 +20,20 @@ module.exports = (sequelize, DataTypes) => {
     name_ar: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      }
+      defaultValue: ""
+
     },
     name_en: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      }
+      defaultValue: ""
+
     },
     name_dw: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      }
+      defaultValue: ""
+
     }
   }, {
     sequelize,
