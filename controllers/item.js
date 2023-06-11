@@ -190,3 +190,21 @@ exports.getAllItems = async (req, res, next) => {
         return res.status(500).json(error);
     }
 };
+
+exports.getitemById = async (req, res, next) => {
+    const { id } = req.params;
+    console.log(id);
+    try {
+        const item = await Item.findOne({
+            where: {
+                id: id
+            },
+            include: {
+                model: Photo
+            }
+        });
+        return res.status(200).json(item);
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+};

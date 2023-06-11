@@ -19,6 +19,7 @@ const item = require("../controllers/item");
 router.post("/", upload, item.storeItem);
 
 router.delete("/:id", item.deleteItem);
+router.get("/:id", item.getitemById);
 
 router.put("/:id", item.updateItem);
 

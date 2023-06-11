@@ -34,7 +34,80 @@ exports.getCategory = async (req, res, next) => {
         return res.status(500).json(error.message);
     }
 };
+exports.getCategoryByIdLanguage = async (req, res, next) => {
 
+    const { id } = req.params;
+    const { language } = req.query;
+
+    try {
+
+        const category = await Category.findOne({
+            where: {
+                id: id,
+            },
+            attributes: ['id', [`name_${language}`, 'name'], 'createdAt', 'updatedAt','image'],
+            include: [{
+                model: Item,
+                attributes: ['id', [`name_${language}`, 'name'], [`details_${language}`, 'details'], 'cost', 'active', 'createdAt', 'updatedAt'],
+                include: [
+                    {
+                        model: Tag,
+                        attributes: ['id', [`name_${language}`, 'name'], 'createdAt', 'updatedAt'],
+                    }, {
+                        model: Ingredient,
+                        attributes: ['id', [`name_${language}`, 'name'], 'createdAt', 'updatedAt'],
+                    }, {
+                        model: Photo
+                    }
+                ]
+            }]
+
+        });
+        return res.status(200).json(category);
+
+    } catch (error) {
+        return res.status(500).json(error.message);
+
+
+    }
+
+
+}
+
+exports.getCategoryById = async (req, res, next) => {
+
+    const { id } = req.params;
+
+    try {
+
+        const category = await Category.findOne({
+            where: {
+                id: id,
+            },
+            include: [{
+                model: Item,
+                include: [
+                    {
+                        model: Tag,
+                    }, {
+                        model: Ingredient,
+                    }, {
+                        model: Photo
+                    }
+                ]
+            }]
+
+        });
+        return res.status(200).json(category);
+
+    } catch (error) {
+        return res.status(500).json(error.message);
+
+
+    }
+
+
+}
 
 exports.storeCategory = async (req, res, next) => {
     const { name_ar, name_en, name_dw } = req.body;
