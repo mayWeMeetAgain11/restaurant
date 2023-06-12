@@ -3,6 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const app = express();
 const { sequelize } = require('./models');
+require('dotenv').config();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -14,13 +15,13 @@ app.use('/resturant/items', require('./routes/item'));
 app.use('/resturant/tags', require('./routes/tag'));
 app.use('/resturant/ingredients', require('./routes/ingredient'));
 app.use('/resturant/users', require('./routes/auth'));
-app.get('/resturant',(req,res)=>{
-    return res.json("welcome to our Resurant app!" );
+app.get('/resturant', (req, res) => {
+    return res.json("welcome to our Resurant app!");
 })
 
-app.listen({ port: 3000, }, async () => {
+app.listen({ port: process.env.PORT, }, async () => {
     // { focus: true }
-     //await sequelize.sync();
+    //await sequelize.sync();
     await sequelize.authenticate();
-    console.log('starting');
+    console.log('starting on port: ' +process.env.PORT);
 });

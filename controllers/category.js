@@ -45,7 +45,7 @@ exports.getCategoryByIdLanguage = async (req, res, next) => {
             where: {
                 id: id,
             },
-            attributes: ['id', [`name_${language}`, 'name'], 'createdAt', 'updatedAt','image'],
+            attributes: ['id', [`name_${language}`, 'name'], 'createdAt', 'updatedAt', 'image'],
             include: [{
                 model: Item,
                 attributes: ['id', [`name_${language}`, 'name'], [`details_${language}`, 'details'], 'cost', 'active', 'createdAt', 'updatedAt'],
@@ -128,7 +128,6 @@ exports.storeCategory = async (req, res, next) => {
 
 exports.updateCategory = async (req, res, next) => {
     const { name_ar, name_en, name_dw } = req.body;
-    console.log(req.body);
     const { id } = req.params;
     try {
         const category = await Category.findOne({
@@ -144,6 +143,24 @@ exports.updateCategory = async (req, res, next) => {
         category.name_dw = name_dw;
         await category.save();
         return res.status(200).json({ message: 'category updated successfully' });
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
+};
+exports.updateCategoryPhoto = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const category = await Category.findOne({
+            where: {
+                id: id,
+            }
+        });
+        if (!category) {
+            return res.status(404).json({ message: 'category not found' });
+        }
+        category.image = req.file.path.replace('public', '') || "";
+        await category.save();
+        return res.status(200).json({ message: 'category photo updated successfully' });
     } catch (error) {
         return res.status(500).json(error.message);
     }

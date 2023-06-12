@@ -1,6 +1,8 @@
 const { Item, Photo, Ingredient, Tag, sequelize } = require('../models');
 const { Op } = require('sequelize');
 const fs = require('fs');
+const path = require('path');
+
 
 exports.storeItem = async (req, res, next) => {
     const { itemTags, name_ar, name_en, name_dw, details_ar, details_en, details_dw, cost, itemIngredients, category_id } = req.body;
@@ -49,7 +51,7 @@ exports.storeItem = async (req, res, next) => {
             for (let i = 0; i < req.files.length; i++) {
                 // console.log(req.files[i]);
                 await Photo.create({
-                    image: req.files[i].path,
+                    image: req.files[i].path.replace('public', '') || "",
                     item_id: item.id
                 });
             }
@@ -63,12 +65,18 @@ exports.storeItem = async (req, res, next) => {
 exports.deleteItem = async (req, res, next) => {
     let { id } = req.params;
     try {
-        const item = await Item.findByPk(id, { include: [{ model: Photo }] });
+        const item = await Item.findOne({
+            where: {
+                id: id,
+            },
+            include: [{ model: Photo }]
+        });
         if (!item) {
             return res.status(403).json({ massage: 'item not found' });
         }
         for (let index = 0; index < item.Photos.length; index++) {
-            fs.unlinkSync(item.Photos[index].image)
+            console.log(item.Photos[index].image);
+            fs.unlinkSync('public'+item.Photos[index].image)
         }
         item.destroy();
         return res.status(200).json({ message: 'item deleted successfully' });
