@@ -110,21 +110,14 @@ exports.getCategoryById = async (req, res, next) => {
 
 exports.storeCategory = async (req, res, next) => {
     const { name_ar, name_en, name_dw } = req.body;
-<<<<<<< HEAD
-=======
     console.log(req.body);
->>>>>>> ba9092699b1f1431a278394d20f91173187ae595
     try {
 
         const category = await Category.create({
             name_ar: name_ar,
             name_en: name_en,
             name_dw: name_dw,
-<<<<<<< HEAD
-            image: req.file.path || null,
-=======
             image: req.file.path.replace('public', '') || "",
->>>>>>> ba9092699b1f1431a278394d20f91173187ae595
         });
         return res.status(200).json(category);
     } catch (error) {
@@ -134,10 +127,7 @@ exports.storeCategory = async (req, res, next) => {
 
 exports.updateCategory = async (req, res, next) => {
     const { name_ar, name_en, name_dw } = req.body;
-<<<<<<< HEAD
-=======
     console.log(req.body);
->>>>>>> ba9092699b1f1431a278394d20f91173187ae595
     const { id } = req.params;
     try {
         const category = await Category.findOne({

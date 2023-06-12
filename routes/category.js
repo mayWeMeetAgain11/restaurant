@@ -14,12 +14,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).single("files");
 
-<<<<<<< HEAD
-const { getCategory, storeCategory, updateCategory, deleteCategory } = require('../controllers/category');
-
-router.get('/', getCategory);
-
-=======
 const { getCategory, storeCategory, updateCategory, deleteCategory, getCategoryById, getCategoryByIdLanguage
 } = require('../controllers/category');
 
@@ -29,7 +23,6 @@ router.get('/:id', getCategoryById);
 
 router.get('/lan/:id', getCategoryByIdLanguage);
 
->>>>>>> ba9092699b1f1431a278394d20f91173187ae595
 router.post('/', upload, storeCategory);
 
 router.put('/:id', updateCategory);
