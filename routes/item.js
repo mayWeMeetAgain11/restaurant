@@ -28,4 +28,6 @@ router.put("/top-show/update", item.updateTopShow);
 
 router.put("/top-show/new-list", item.updateToActive);
 
+router.get("/", item.getAllItems);
+
 module.exports = router;

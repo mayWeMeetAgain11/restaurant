@@ -117,7 +117,7 @@ exports.getActiveItem = async (req, res, next) => {
             attributes: [
                 'id',
                 `name_${language}`,
-                `details${language}`,
+                `details_${language}`,
                 'category_id',
                 'cost',
                 'createdAt',
@@ -169,3 +169,25 @@ exports.updateTopShow = async (req, res, next) => {
         return res.status(500).json(error);
     }
 }; 
+
+
+
+exports.getAllItems = async (req, res, next) => {
+    const { language } = req.query;
+    try {
+        const items = await Item.findAll({
+            attributes: [
+                'id',
+                `name_${language}`,
+                `details_${language}`,
+                'category_id',
+                'cost',
+                'createdAt',
+                'updatedAt',
+            ],
+        });
+        return res.status(200).json(items);
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+};

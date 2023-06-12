@@ -1,12 +1,24 @@
-const express = require('express');
+const express = require("express");
+const multer = require("multer");
 
 const router = express.Router();
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "public/photos");
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + "-" + file.originalname);
+    },
+});
+
+const upload = multer({ storage: storage }).single("files");
 
 const { getCategory, storeCategory, updateCategory, deleteCategory } = require('../controllers/category');
 
 router.get('/', getCategory);
 
-router.post('/', storeCategory);
+router.post('/', upload, storeCategory);
 
 router.put('/:id', updateCategory);
 
