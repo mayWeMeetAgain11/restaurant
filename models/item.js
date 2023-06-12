@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsTo(models.Category, {
         foreignKey: {
-          name: 'category_id' 
+          name: 'category_id'
         }
       });
       this.belongsToMany(models.Tag, {
@@ -41,59 +41,55 @@ module.exports = (sequelize, DataTypes) => {
     name_ar: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      defaultValue: ""
+
+
     },
     name_en: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      defaultValue: ""
+
+
     },
     name_dw: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      defaultValue: ""
+
+
     },
     details_ar: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: false,
+      defaultValue: ""
+
+
     },
     details_en: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: false,
+      defaultValue: ""
+
+
     },
     details_dw: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: false,
+      defaultValue: ""
+
+
     },
     cost: {
       type: DataTypes.DOUBLE,
       allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      defaultValue: 0
     },
     active: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
-      validate: {
-        notEmpty: true
-      }
+      
     },
   }, {
     sequelize,

@@ -1,45 +1,23 @@
 const { Category, Item, Tag, Ingredient, Photo } = require('../models');
+const sequelize = require('sequelize');
 
 
 exports.getCategory = async (req, res, next) => {
     const { language } = req.query;
     try {
         const category = await Category.findAll({
-            attributes: ['id', [`name_${language}`, "name"], 'createdAt', 'updatedAt', 'image'],
+            attributes: ['id', [`name_${language}`, 'name'], 'image', 'createdAt', 'updatedAt'],
             include: [
-                // {
-                //     model: Category,
-                //     as: 'categories',
-                //     attributes: ['id', [`name_${language}`, "name"], 'createdAt', 'updatedAt'],
-                //     hierarchy: true,
-                //     include: [
-                //         {
-                //             model: Item,
-                //             attributes: ['id', [`name_${language}`, "name"], [`details_${language}`, "details"], 'cost', 'createdAt', 'updatedAt'],
-                //             include: [
-                //                 {
-                //                     model: Tag,
-                //                     attributes: ['id', [`name_${language}`, "name"], 'createdAt', 'updatedAt'],
-                //                 }, {
-                //                     model: Ingredient,
-                //                     attributes: ['id', [`name_${language}`, "name"], 'createdAt', 'updatedAt'],
-                //                 }, {
-                //                     model: Photo
-                //                 }
-                //             ]
-                //         }
-                //     ]
-                // },
                 {
                     model: Item,
-                    attributes: ['id', [`name_${language}`, "name"], [`details_${language}`, "details"], 'cost', 'active', 'createdAt', 'updatedAt'],
+                    attributes: ['id', [`name_${language}`, 'name'], [`details_${language}`, 'details'], 'cost', 'active', 'createdAt', 'updatedAt'],
                     include: [
                         {
                             model: Tag,
-                            attributes: ['id', [`name_${language}`, "name"], 'createdAt', 'updatedAt'],
+                            attributes: ['id', [`name_${language}`, 'name'], 'createdAt', 'updatedAt'],
                         }, {
                             model: Ingredient,
-                            attributes: ['id', [`name_${language}`, "name"], 'createdAt', 'updatedAt'],
+                            attributes: ['id', [`name_${language}`, 'name'], 'createdAt', 'updatedAt'],
                         }, {
                             model: Photo
                         }
@@ -55,24 +33,98 @@ exports.getCategory = async (req, res, next) => {
         return res.status(500).json(error.message);
     }
 };
+exports.getCategoryByIdLanguage = async (req, res, next) => {
 
+    const { id } = req.params;
+    const { language } = req.query;
+
+    try {
+
+        const category = await Category.findOne({
+            where: {
+                id: id,
+            },
+            attributes: ['id', [`name_${language}`, 'name'], 'createdAt', 'updatedAt','image'],
+            include: [{
+                model: Item,
+                attributes: ['id', [`name_${language}`, 'name'], [`details_${language}`, 'details'], 'cost', 'active', 'createdAt', 'updatedAt'],
+                include: [
+                    {
+                        model: Tag,
+                        attributes: ['id', [`name_${language}`, 'name'], 'createdAt', 'updatedAt'],
+                    }, {
+                        model: Ingredient,
+                        attributes: ['id', [`name_${language}`, 'name'], 'createdAt', 'updatedAt'],
+                    }, {
+                        model: Photo
+                    }
+                ]
+            }]
+
+        });
+        return res.status(200).json(category);
+
+    } catch (error) {
+        return res.status(500).json(error.message);
+
+
+    }
+
+
+}
+
+exports.getCategoryById = async (req, res, next) => {
+
+    const { id } = req.params;
+
+    try {
+
+        const category = await Category.findOne({
+            where: {
+                id: id,
+            },
+            include: [{
+                model: Item,
+                include: [
+                    {
+                        model: Tag,
+                    }, {
+                        model: Ingredient,
+                    }, {
+                        model: Photo
+                    }
+                ]
+            }]
+
+        });
+        return res.status(200).json(category);
+
+    } catch (error) {
+        return res.status(500).json(error.message);
+
+
+    }
+
+
+}
 
 exports.storeCategory = async (req, res, next) => {
     const { name_ar, name_en, name_dw } = req.body;
+<<<<<<< HEAD
+=======
+    console.log(req.body);
+>>>>>>> ba9092699b1f1431a278394d20f91173187ae595
     try {
-        const rootCategory = await Category.findOne({
-            where: {
-                id: category_id
-            }
-        });
-        if (rootCategory.category_id !== null)  {
-            return res.status(401).json({msg: "you can not add more than two level in category"});
-        }
+
         const category = await Category.create({
             name_ar: name_ar,
             name_en: name_en,
             name_dw: name_dw,
+<<<<<<< HEAD
             image: req.file.path || null,
+=======
+            image: req.file.path.replace('public', '') || "",
+>>>>>>> ba9092699b1f1431a278394d20f91173187ae595
         });
         return res.status(200).json(category);
     } catch (error) {
@@ -82,6 +134,10 @@ exports.storeCategory = async (req, res, next) => {
 
 exports.updateCategory = async (req, res, next) => {
     const { name_ar, name_en, name_dw } = req.body;
+<<<<<<< HEAD
+=======
+    console.log(req.body);
+>>>>>>> ba9092699b1f1431a278394d20f91173187ae595
     const { id } = req.params;
     try {
         const category = await Category.findOne({

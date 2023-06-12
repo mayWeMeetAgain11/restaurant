@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     amount: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: null,
+      defaultValue: "",
       validate: {
         notEmpty: true,
       }

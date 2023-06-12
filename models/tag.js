@@ -27,24 +27,21 @@ module.exports = (sequelize, DataTypes) => {
     },
     name_ar: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: false,
+      defaultValue: ""
+
     },
     name_en: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: false,
+      defaultValue: ""
+
     },
     name_dw: {
       type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: false,
+      defaultValue: ""
+
     },
   }, {
     sequelize,
