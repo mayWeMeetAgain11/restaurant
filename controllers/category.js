@@ -8,7 +8,6 @@ exports.getCategory = async (req, res, next) => {
         const category = await Category.findAll({
             attributes: ['id', [`name_${language}`, 'name'], 'image', 'createdAt', 'updatedAt'],
             include: [
-
                 {
                     model: Item,
                     attributes: ['id', [`name_${language}`, 'name'], [`details_${language}`, 'details'], 'cost', 'active', 'createdAt', 'updatedAt'],
