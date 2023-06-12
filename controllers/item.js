@@ -85,7 +85,7 @@ exports.deleteItem = async (req, res, next) => {
     }
 };
 
-exports.updateItem = async (req, res, next) => {
+exports.updateItemWithoutImage = async (req, res, next) => {
     let { id } = req.params;
     let { itemTags, name_ar, name_en, name_dw, details_ar, details_en, details_dw, cost, active, itemIngredients, category_id } = req.body;
     try {
@@ -100,18 +100,32 @@ exports.updateItem = async (req, res, next) => {
         item.details_ar = details_ar;
         item.details_en = details_en;
         item.details_dw = details_dw;
-        item.itemTags = itemTags;
-        item.itemIngredients = itemIngredients;
         item.category_id = category_id;
-        if (req.files) {
-            for (let i = 0; i < req.files.length; i++) {
-                await Photo.create({
-                    image: req.files[i].path,
-                    item_id: item.id
-                });
+        // if (req.files) {
+        //     for (let i = 0; i < req.files.length; i++) {
+        //         await Photo.create({
+        //             image: req.files[i].path,
+        //             item_id: item.id
+        //         });
+        //     }
+        // }
+        await item.save();
+        const tags = await Tag.findAll({
+            where: {
+                id: {
+                    [Op.in]: itemTags
+                }
             }
-        }
-        item.save();
+        });
+        const addedTags = await item.addTags(tags);
+        const ingredients = await Ingredient.findAll({
+            where: {
+                id: {
+                    [Op.in]: itemIngredients
+                }
+            }
+        });
+        const addedIngredients = await item.addIngredients(ingredients);
         return res.status(200).json({ massage: 'item updated sucessfully' });
     } catch (error) {
         return res.status(500).json(error);
@@ -212,6 +226,37 @@ exports.getitemById = async (req, res, next) => {
             }
         });
         return res.status(200).json(item);
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+};
+
+exports.deleteImage = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const photo = await Photo.findOne({
+            where: {
+                id: id
+            }
+        });
+        fs.unlinkSync(photo.image);
+        await photo.destroy();
+        return res.status(200).json({ massage: "photo deleted successfully" })
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+};
+
+exports.storeImages = async (req, res, next) => {
+    const { item_id } = req.body;
+    try {
+        for (let i = 0; i < req.files.length; i++) {
+            await Photo.create({
+                image: req.files[i].path,
+                item_id: item_id
+            });
+        }
+        return res.status(200).json({ massage: "photo added successfully" })
     } catch (error) {
         return res.status(500).json(error);
     }
