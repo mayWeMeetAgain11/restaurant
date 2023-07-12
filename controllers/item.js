@@ -1,8 +1,7 @@
-const { Item, Photo, Ingredient, Tag, sequelize } = require('../models');
 const { Op } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
-
+const { Item, Photo, Ingredient, Tag, sequelize, ItemTag, ItemIngredient } = require('../models');
 
 exports.storeItem = async (req, res, next) => {
     const { itemTags, name_ar, name_en, name_dw, details_ar, details_en, details_dw, cost, itemIngredients, category_id } = req.body;
@@ -76,7 +75,7 @@ exports.deleteItem = async (req, res, next) => {
         }
         for (let index = 0; index < item.Photos.length; index++) {
             console.log(item.Photos[index].image);
-            fs.unlinkSync('public'+item.Photos[index].image)
+            fs.unlinkSync('public' + item.Photos[index].image)
         }
         item.destroy();
         return res.status(200).json({ message: 'item deleted successfully' });
@@ -101,15 +100,12 @@ exports.updateItemWithoutImage = async (req, res, next) => {
         item.details_en = details_en;
         item.details_dw = details_dw;
         item.category_id = category_id;
-        // if (req.files) {
-        //     for (let i = 0; i < req.files.length; i++) {
-        //         await Photo.create({
-        //             image: req.files[i].path,
-        //             item_id: item.id
-        //         });
-        //     }
-        // }
         await item.save();
+        await ItemTag.destroy({
+            where: {
+                item_id: item.id,
+            }
+        });
         const tags = await Tag.findAll({
             where: {
                 id: {
@@ -118,6 +114,11 @@ exports.updateItemWithoutImage = async (req, res, next) => {
             }
         });
         const addedTags = await item.addTags(tags);
+        await ItemIngredient.destroy({
+            where: {
+                item_id: item.id,
+            }
+        });
         const ingredients = await Ingredient.findAll({
             where: {
                 id: {
@@ -203,6 +204,7 @@ exports.getAllItems = async (req, res, next) => {
                 [`details_${language}`, 'name'],
                 'category_id',
                 'cost',
+                'active',
                 'createdAt',
                 'updatedAt',
             ],
@@ -239,7 +241,11 @@ exports.deleteImage = async (req, res, next) => {
                 id: id
             }
         });
-        fs.unlinkSync(photo.image);
+
+        if (photo === null)
+            return res.status(200).json({ massage: "photo not found" })
+
+        fs.unlinkSync('public' + photo.image)
         await photo.destroy();
         return res.status(200).json({ massage: "photo deleted successfully" })
     } catch (error) {
@@ -252,7 +258,7 @@ exports.storeImages = async (req, res, next) => {
     try {
         for (let i = 0; i < req.files.length; i++) {
             await Photo.create({
-                image: req.files[i].path,
+                image: req.files[i].path.replace('public', '') || "",
                 item_id: item_id
             });
         }
